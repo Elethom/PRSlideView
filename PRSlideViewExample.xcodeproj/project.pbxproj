@@ -21,6 +21,16 @@
 		93EECC83198F8CD900142B4F /* PRSlideViewExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93EECC82198F8CD900142B4F /* PRSlideViewExampleTests.m */; };
 		93EECC90198F8D5F00142B4F /* PRSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93EECC8F198F8D5F00142B4F /* PRSlideView.m */; };
 		93EECC931990703E00142B4F /* PRSlideViewPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 93EECC921990703E00142B4F /* PRSlideViewPage.m */; };
+		93EECC9C1990B16200142B4F /* PRAlbumPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 93EECC9B1990B16200142B4F /* PRAlbumPage.m */; };
+		93EECC9F1990B17000142B4F /* PRAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93EECC9E1990B17000142B4F /* PRAlbumViewController.m */; };
+		93EECCA91990B1B800142B4F /* Gorillaz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 93EECCA11990B1B800142B4F /* Gorillaz.jpg */; };
+		93EECCAA1990B1B800142B4F /* G-Sides.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 93EECCA21990B1B800142B4F /* G-Sides.jpg */; };
+		93EECCAB1990B1B800142B4F /* The Fall.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 93EECCA31990B1B800142B4F /* The Fall.jpg */; };
+		93EECCAC1990B1B800142B4F /* Plastic Beach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 93EECCA41990B1B800142B4F /* Plastic Beach.jpg */; };
+		93EECCAD1990B1B800142B4F /* The Singles Collection 2001-2011.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 93EECCA51990B1B800142B4F /* The Singles Collection 2001-2011.jpg */; };
+		93EECCAE1990B1B800142B4F /* Demon Days.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 93EECCA61990B1B800142B4F /* Demon Days.jpg */; };
+		93EECCAF1990B1B800142B4F /* D-Sides (Special Edition).jpg in Resources */ = {isa = PBXBuildFile; fileRef = 93EECCA71990B1B800142B4F /* D-Sides (Special Edition).jpg */; };
+		93EECCB01990B1B800142B4F /* Laika Come Home.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 93EECCA81990B1B800142B4F /* Laika Come Home.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +64,18 @@
 		93EECC8F198F8D5F00142B4F /* PRSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PRSlideView.m; path = Classes/PRSlideView.m; sourceTree = SOURCE_ROOT; };
 		93EECC911990703E00142B4F /* PRSlideViewPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PRSlideViewPage.h; path = Classes/PRSlideViewPage.h; sourceTree = SOURCE_ROOT; };
 		93EECC921990703E00142B4F /* PRSlideViewPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PRSlideViewPage.m; path = Classes/PRSlideViewPage.m; sourceTree = SOURCE_ROOT; };
+		93EECC9A1990B16200142B4F /* PRAlbumPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRAlbumPage.h; sourceTree = "<group>"; };
+		93EECC9B1990B16200142B4F /* PRAlbumPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRAlbumPage.m; sourceTree = "<group>"; };
+		93EECC9D1990B17000142B4F /* PRAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRAlbumViewController.h; sourceTree = "<group>"; };
+		93EECC9E1990B17000142B4F /* PRAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRAlbumViewController.m; sourceTree = "<group>"; };
+		93EECCA11990B1B800142B4F /* Gorillaz.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Gorillaz.jpg; sourceTree = "<group>"; };
+		93EECCA21990B1B800142B4F /* G-Sides.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "G-Sides.jpg"; sourceTree = "<group>"; };
+		93EECCA31990B1B800142B4F /* The Fall.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "The Fall.jpg"; sourceTree = "<group>"; };
+		93EECCA41990B1B800142B4F /* Plastic Beach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Plastic Beach.jpg"; sourceTree = "<group>"; };
+		93EECCA51990B1B800142B4F /* The Singles Collection 2001-2011.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "The Singles Collection 2001-2011.jpg"; sourceTree = "<group>"; };
+		93EECCA61990B1B800142B4F /* Demon Days.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Demon Days.jpg"; sourceTree = "<group>"; };
+		93EECCA71990B1B800142B4F /* D-Sides (Special Edition).jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "D-Sides (Special Edition).jpg"; sourceTree = "<group>"; };
+		93EECCA81990B1B800142B4F /* Laika Come Home.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Laika Come Home.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +137,7 @@
 			children = (
 				93EECC8C198F8D1200142B4F /* Classes */,
 				93EECC8D198F8D1700142B4F /* UI */,
+				93EECCA01990B1A100142B4F /* Resources */,
 				93EECC6C198F8CD900142B4F /* PRAppDelegate.h */,
 				93EECC6D198F8CD900142B4F /* PRAppDelegate.m */,
 				93EECC6F198F8CD900142B4F /* Images.xcassets */,
@@ -166,8 +189,27 @@
 		93EECC8D198F8D1700142B4F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				93EECC9A1990B16200142B4F /* PRAlbumPage.h */,
+				93EECC9B1990B16200142B4F /* PRAlbumPage.m */,
+				93EECC9D1990B17000142B4F /* PRAlbumViewController.h */,
+				93EECC9E1990B17000142B4F /* PRAlbumViewController.m */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		93EECCA01990B1A100142B4F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				93EECCA11990B1B800142B4F /* Gorillaz.jpg */,
+				93EECCA21990B1B800142B4F /* G-Sides.jpg */,
+				93EECCA81990B1B800142B4F /* Laika Come Home.jpg */,
+				93EECCA61990B1B800142B4F /* Demon Days.jpg */,
+				93EECCA71990B1B800142B4F /* D-Sides (Special Edition).jpg */,
+				93EECCA41990B1B800142B4F /* Plastic Beach.jpg */,
+				93EECCA31990B1B800142B4F /* The Fall.jpg */,
+				93EECCA51990B1B800142B4F /* The Singles Collection 2001-2011.jpg */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,7 +289,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				93EECC68198F8CD900142B4F /* InfoPlist.strings in Resources */,
+				93EECCAE1990B1B800142B4F /* Demon Days.jpg in Resources */,
+				93EECCAD1990B1B800142B4F /* The Singles Collection 2001-2011.jpg in Resources */,
+				93EECCAF1990B1B800142B4F /* D-Sides (Special Edition).jpg in Resources */,
 				93EECC70198F8CD900142B4F /* Images.xcassets in Resources */,
+				93EECCAA1990B1B800142B4F /* G-Sides.jpg in Resources */,
+				93EECCAC1990B1B800142B4F /* Plastic Beach.jpg in Resources */,
+				93EECCB01990B1B800142B4F /* Laika Come Home.jpg in Resources */,
+				93EECCAB1990B1B800142B4F /* The Fall.jpg in Resources */,
+				93EECCA91990B1B800142B4F /* Gorillaz.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +319,8 @@
 				93EECC6E198F8CD900142B4F /* PRAppDelegate.m in Sources */,
 				93EECC6A198F8CD900142B4F /* main.m in Sources */,
 				93EECC90198F8D5F00142B4F /* PRSlideView.m in Sources */,
+				93EECC9C1990B16200142B4F /* PRAlbumPage.m in Sources */,
+				93EECC9F1990B17000142B4F /* PRAlbumViewController.m in Sources */,
 				93EECC931990703E00142B4F /* PRSlideViewPage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
