@@ -19,6 +19,8 @@
 		93EECC79198F8CD900142B4F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93EECC61198F8CD900142B4F /* UIKit.framework */; };
 		93EECC81198F8CD900142B4F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93EECC7F198F8CD900142B4F /* InfoPlist.strings */; };
 		93EECC83198F8CD900142B4F /* PRSlideViewExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93EECC82198F8CD900142B4F /* PRSlideViewExampleTests.m */; };
+		93EECC90198F8D5F00142B4F /* PRSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93EECC8F198F8D5F00142B4F /* PRSlideView.m */; };
+		93EECC931990703E00142B4F /* PRSlideViewPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 93EECC921990703E00142B4F /* PRSlideViewPage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,10 @@
 		93EECC7E198F8CD900142B4F /* PRSlideViewExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PRSlideViewExampleTests-Info.plist"; sourceTree = "<group>"; };
 		93EECC80198F8CD900142B4F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		93EECC82198F8CD900142B4F /* PRSlideViewExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PRSlideViewExampleTests.m; sourceTree = "<group>"; };
+		93EECC8E198F8D5F00142B4F /* PRSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PRSlideView.h; path = Classes/PRSlideView.h; sourceTree = SOURCE_ROOT; };
+		93EECC8F198F8D5F00142B4F /* PRSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PRSlideView.m; path = Classes/PRSlideView.m; sourceTree = SOURCE_ROOT; };
+		93EECC911990703E00142B4F /* PRSlideViewPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PRSlideViewPage.h; path = Classes/PRSlideViewPage.h; sourceTree = SOURCE_ROOT; };
+		93EECC921990703E00142B4F /* PRSlideViewPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PRSlideViewPage.m; path = Classes/PRSlideViewPage.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,8 @@
 		93EECC63198F8CD900142B4F /* PRSlideViewExample */ = {
 			isa = PBXGroup;
 			children = (
+				93EECC8C198F8D1200142B4F /* Classes */,
+				93EECC8D198F8D1700142B4F /* UI */,
 				93EECC6C198F8CD900142B4F /* PRAppDelegate.h */,
 				93EECC6D198F8CD900142B4F /* PRAppDelegate.m */,
 				93EECC6F198F8CD900142B4F /* Images.xcassets */,
@@ -142,6 +150,24 @@
 				93EECC7F198F8CD900142B4F /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		93EECC8C198F8D1200142B4F /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				93EECC911990703E00142B4F /* PRSlideViewPage.h */,
+				93EECC921990703E00142B4F /* PRSlideViewPage.m */,
+				93EECC8E198F8D5F00142B4F /* PRSlideView.h */,
+				93EECC8F198F8D5F00142B4F /* PRSlideView.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		93EECC8D198F8D1700142B4F /* UI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,6 +268,8 @@
 			files = (
 				93EECC6E198F8CD900142B4F /* PRAppDelegate.m in Sources */,
 				93EECC6A198F8CD900142B4F /* main.m in Sources */,
+				93EECC90198F8D5F00142B4F /* PRSlideView.m in Sources */,
+				93EECC931990703E00142B4F /* PRSlideViewPage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +468,7 @@
 				93EECC88198F8CD900142B4F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		93EECC89198F8CD900142B4F /* Build configuration list for PBXNativeTarget "PRSlideViewExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -448,6 +477,7 @@
 				93EECC8B198F8CD900142B4F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
