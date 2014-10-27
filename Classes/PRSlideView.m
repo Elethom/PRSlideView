@@ -10,8 +10,9 @@
 
 @interface PRSlideView ()
 
-@property (nonatomic, assign) NSInteger currentPageIndex;
+@property (nonatomic, assign) NSInteger currentPageActualIndex;
 @property (nonatomic, assign) NSInteger numberOfPages;
+@property (nonatomic, assign) NSInteger baseIndexOffset;
 
 @property (nonatomic, strong) NSMutableDictionary *classForIdentifiers;
 @property (nonatomic, strong) NSMutableDictionary *reusablePages;
@@ -23,6 +24,12 @@
 - (void)removePagesOutOfIndexRange:(NSRange)indexRange;
 - (void)didScrollToPageAtIndex:(NSInteger)index;
 
+- (void)scrollToPageAtActualIndex:(NSInteger)index;
+- (void)scrollToPageAtActualIndex:(NSInteger)index animated:(BOOL)animated;
+
+- (NSInteger)actualIndexForIndexInCurrentLoop:(NSInteger)index;
+- (NSInteger)actualIndexForIndex:(NSInteger)index forward:(BOOL)forward;
+- (NSInteger)indexForActualIndex:(NSInteger)index;
 - (CGRect)rectForPageAtIndex:(NSInteger)index;
 - (void)resizeContent;
 
@@ -44,13 +51,15 @@
             [pages removeObject:reusablePage];
         }
     }
+    CGRect frame = [self rectForPageAtIndex:index];
     if (!reusablePage) {
         Class PRSlideViewPageClass = NSClassFromString(self.classForIdentifiers[identifier]);
-        reusablePage = [[PRSlideViewPageClass alloc] init];
+        reusablePage = [[PRSlideViewPageClass alloc] initWithFrame:frame];
         reusablePage.pageIdentifier = identifier;
+    } else {
+        reusablePage.frame = frame;
     }
     reusablePage.pageIndex = index;
-    reusablePage.frame = [self rectForPageAtIndex:index];
     [self.loadedPages addObject:reusablePage];
     return reusablePage;
 }
@@ -94,6 +103,24 @@
 
 - (void)scrollToPageAtIndex:(NSInteger)index animated:(BOOL)animated
 {
+    [self scrollToPageAtActualIndex:[self actualIndexForIndexInCurrentLoop:index]
+                           animated:animated];
+}
+
+- (void)scrollToPageAtIndex:(NSInteger)index forward:(BOOL)forward animated:(BOOL)animated
+{
+    NSInteger actualIndex = self.infiniteScrollingEnabled ? [self actualIndexForIndex:index forward:forward] : index;
+    [self scrollToPageAtActualIndex:actualIndex
+                           animated:animated];
+}
+
+- (void)scrollToPageAtActualIndex:(NSInteger)index
+{
+    [self scrollToPageAtActualIndex:index animated:YES];
+}
+
+- (void)scrollToPageAtActualIndex:(NSInteger)index animated:(BOOL)animated
+{
     [self setContentOffset:[self rectForPageAtIndex:index].origin animated:animated];
 }
 
@@ -105,20 +132,21 @@
     
     self.numberOfPages = [self.dataSource numberOfPagesInSlideView:self];
     [self resizeContent];
-    
-    NSInteger basePageIndex = MIN(self.currentPageIndex, self.numberOfPages - 1);
-    NSUInteger offset = basePageIndex == 0 ? 1 : 0;
-    [self addPagesAtIndexRange:NSMakeRange(basePageIndex + offset - 1, 3 - offset)];
-    
-    [self didScrollToPageAtIndex:self.currentPageIndex];
+    if (self.infiniteScrollingEnabled && !self.currentPageIndex) {
+        [self scrollToPageAtActualIndex:self.baseIndexOffset animated:NO];
+    } else {
+        [self didScrollToPageAtIndex:self.currentPageActualIndex];
+    }
 }
 
 - (void)addPagesAtIndexRange:(NSRange)indexRange
 {
-    indexRange = NSIntersectionRange(indexRange, NSMakeRange(0, self.numberOfPages));
+    if (!self.infiniteScrollingEnabled) {
+        indexRange = NSIntersectionRange(indexRange, NSMakeRange(0, self.numberOfPages));
+    }
     for (NSInteger pageIndex = indexRange.location; pageIndex < NSMaxRange(indexRange); pageIndex++) {
         if (![self pageAtIndex:pageIndex]) {
-            PRSlideViewPage *page = [self.dataSource slideView:self pageAtIndex:pageIndex];
+            PRSlideViewPage *page = [self.dataSource slideView:self pageAtIndex:[self indexForActualIndex:pageIndex]];
             [page addTarget:self action:@selector(pageClicked:) forControlEvents:UIControlEventTouchUpInside];
             if (page) {
                 page.pageIndex = pageIndex;
@@ -153,7 +181,9 @@
 
 - (void)removePagesOutOfIndexRange:(NSRange)indexRange
 {
-    indexRange = NSIntersectionRange(indexRange, NSMakeRange(0, self.numberOfPages));
+    if (!self.infiniteScrollingEnabled) {
+        indexRange = NSIntersectionRange(indexRange, NSMakeRange(0, self.numberOfPages));
+    }
     for (NSInteger idx = 0; idx < self.loadedPages.count; idx++) {
         PRSlideViewPage *page = self.loadedPages[idx];
         NSInteger pageIndex = page.pageIndex;
@@ -179,7 +209,7 @@
 - (void)didScrollToPageAtIndex:(NSInteger)index
 {
     if ([self.delegate respondsToSelector:@selector(slideView:didScrollToPageAtIndex:)]) {
-        [self.delegate slideView:self didScrollToPageAtIndex:index];
+        [self.delegate slideView:self didScrollToPageAtIndex:[self indexForActualIndex:index]];
     }
     NSInteger offset = index == 0 ? 1 : 0;
     NSRange currentRange = NSMakeRange(index + offset - 1, 3 - offset);
@@ -188,6 +218,50 @@
 }
 
 #pragma mark - Frame
+
+- (NSInteger)actualIndexForIndexInCurrentLoop:(NSInteger)index
+{
+    if (!self.infiniteScrollingEnabled) {
+        return index;
+    }
+    return self.currentPageActualIndex - self.currentPageIndex + index;
+}
+
+- (NSInteger)actualIndexForIndex:(NSInteger)index forward:(BOOL)forward
+{
+    if (!self.infiniteScrollingEnabled) {
+        return index;
+    }
+    NSInteger currentPageActualIndex = self.currentPageActualIndex;
+    NSInteger currentPageIndex = self.currentPageIndex;
+    NSInteger numberOfPages = self.numberOfPages;
+    NSInteger offset = index - currentPageIndex;
+    if (forward) {
+        if (offset >= 0) {
+            return currentPageActualIndex + offset;
+        } else {
+            return currentPageActualIndex + numberOfPages + offset;
+        }
+    } else {
+        if (offset <= 0) {
+            return currentPageActualIndex + offset;
+        } else {
+            return currentPageActualIndex - numberOfPages + offset;
+        }
+    }
+}
+
+- (NSInteger)indexForActualIndex:(NSInteger)index
+{
+    NSInteger numberOfPages = self.numberOfPages;
+    if (self.infiniteScrollingEnabled && index && numberOfPages) {
+        index = index % numberOfPages;
+        if (index < 0) {
+            index += numberOfPages;
+        }
+    }
+    return index;
+}
 
 - (CGRect)rectForPageAtIndex:(NSInteger)index
 {
@@ -205,11 +279,14 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         PRSlideViewDirection direction = self.direction;
+        BOOL infiniteScrollingEnabled = self.infiniteScrollingEnabled;
+        NSInteger numberOfPages = self.numberOfPages;
         CGRect bounds = self.bounds;
         CGFloat width = CGRectGetWidth(bounds);
         CGFloat height = CGRectGetHeight(bounds);
-        self.contentSize = CGSizeMake(width * (direction == PRSlideViewDirectionHorizontal ? self.numberOfPages : 1),
-                                      height * (direction == PRSlideViewDirectionVertical ? self.numberOfPages : 1));
+        CGSize contentSize = CGSizeMake(direction == PRSlideViewDirectionHorizontal ? infiniteScrollingEnabled ? width * numberOfPages * 512 : width * numberOfPages : width,
+                                        direction == PRSlideViewDirectionVertical ? infiniteScrollingEnabled ? height * numberOfPages * 512 : height * numberOfPages : height);
+        self.contentSize = contentSize;
         for (PRSlideViewPage *page in self.visiblePages) {
             page.frame = [self rectForPageAtIndex:page.pageIndex];
         }
@@ -221,18 +298,23 @@
 - (void)pageClicked:(PRSlideViewPage *)page
 {
     if ([self.delegate respondsToSelector:@selector(slideView:didClickPageAtIndex:)]) {
-        [self.delegate slideView:self didClickPageAtIndex:page.pageIndex];
+        [self.delegate slideView:self didClickPageAtIndex:[self indexForActualIndex:page.pageIndex]];
     }
 }
 
 #pragma mark - Getters and setters
 
-- (void)setCurrentPageIndex:(NSInteger)currentPageIndex
+- (NSInteger)currentPageIndex
 {
-    if (_currentPageIndex != currentPageIndex) {
-        _currentPageIndex = currentPageIndex;
+    return [self indexForActualIndex:self.currentPageActualIndex];
+}
+
+- (void)setCurrentPageActualIndex:(NSInteger)currentPageActualIndex
+{
+    if (_currentPageActualIndex != currentPageActualIndex) {
+        _currentPageActualIndex = currentPageActualIndex;
         if (!self.isResizing) {
-            [self didScrollToPageAtIndex:currentPageIndex];
+            [self didScrollToPageAtIndex:currentPageActualIndex];
         }
     }
 }
@@ -241,6 +323,7 @@
 {
     if (_numberOfPages != numberOfPages) {
         _numberOfPages = numberOfPages;
+        self.baseIndexOffset = self.infiniteScrollingEnabled ? numberOfPages * 256 : 0;
         [self resizeContent];
     }
 }
@@ -252,7 +335,8 @@
         CGRect bounds = self.bounds;
         CGFloat width = CGRectGetWidth(bounds);
         CGFloat height = CGRectGetHeight(bounds);
-        self.currentPageIndex = direction == PRSlideViewDirectionHorizontal ? (contentOffset.x + width * .5f) / width : (contentOffset.y + height * .5f) / height;
+        NSInteger index = (NSInteger)(direction == PRSlideViewDirectionHorizontal ? (contentOffset.x + width * .5f) / width : (contentOffset.y + height * .5f) / height);
+        self.currentPageActualIndex = index;
         super.contentOffset = contentOffset;
     }
 }
@@ -260,11 +344,11 @@
 - (void)setFrame:(CGRect)frame
 {
     self.isResizing = YES;
-    NSUInteger currentPageIndex = self.currentPageIndex;
+    NSUInteger currentPageActualIndex = self.currentPageActualIndex;
     [super setFrame:frame];
-    self.currentPageIndex = currentPageIndex;
+    self.currentPageActualIndex = currentPageActualIndex;
     [self resizeContent];
-    [self scrollToPageAtIndex:currentPageIndex animated:NO];
+    [self scrollToPageAtActualIndex:currentPageActualIndex animated:NO];
     self.isResizing = NO;
 }
 

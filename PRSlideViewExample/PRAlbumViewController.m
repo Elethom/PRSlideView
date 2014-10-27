@@ -50,6 +50,7 @@
     PRSlideView *slideView = [[PRSlideView alloc] initWithFrame:bounds];
     slideView.delegate = self;
     slideView.dataSource = self;
+    slideView.infiniteScrollingEnabled = YES;
     [slideView registerClass:PRAlbumPage.class
       forPageReuseIdentifier:NSStringFromClass(PRAlbumPage.class)];
     slideView.autoresizingMask = (UIViewAutoresizingFlexibleWidth |

@@ -40,6 +40,7 @@ typedef NS_ENUM(NSUInteger, PRSlideViewDirection) {
 @property (nonatomic, weak) id<PRSlideViewDataSource> dataSource;
 
 @property (nonatomic, assign) PRSlideViewDirection direction;
+@property (nonatomic, assign) BOOL infiniteScrollingEnabled;
 
 - (NSInteger)currentPageIndex;
 - (NSInteger)numberOfPages;
@@ -54,6 +55,7 @@ typedef NS_ENUM(NSUInteger, PRSlideViewDirection) {
 
 - (void)scrollToPageAtIndex:(NSInteger)index;
 - (void)scrollToPageAtIndex:(NSInteger)index animated:(BOOL)animated;
+- (void)scrollToPageAtIndex:(NSInteger)index forward:(BOOL)forward animated:(BOOL)animated;
 
 - (void)reloadData;
 
