@@ -191,10 +191,11 @@
 
 - (CGRect)rectForPageAtIndex:(NSInteger)index
 {
+    PRSlideViewDirection direction = self.direction;
     CGFloat width = self.bounds.size.width;
     CGFloat height = self.bounds.size.height;
-    CGRect rect = CGRectMake(width * index,
-                             0,
+    CGRect rect = CGRectMake(direction == PRSlideViewDirectionHorizontal ? width * index : 0,
+                             direction == PRSlideViewDirectionVertical ? height * index : 0,
                              width,
                              height);
     return rect;
@@ -203,7 +204,12 @@
 - (void)resizeContent
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.contentSize = CGSizeMake(self.bounds.size.width * self.numberOfPages, self.bounds.size.height);
+        PRSlideViewDirection direction = self.direction;
+        CGRect bounds = self.bounds;
+        CGFloat width = CGRectGetWidth(bounds);
+        CGFloat height = CGRectGetHeight(bounds);
+        self.contentSize = CGSizeMake(width * (direction == PRSlideViewDirectionHorizontal ? self.numberOfPages : 1),
+                                      height * (direction == PRSlideViewDirectionVertical ? self.numberOfPages : 1));
         for (PRSlideViewPage *page in self.visiblePages) {
             page.frame = [self rectForPageAtIndex:page.pageIndex];
         }
@@ -242,8 +248,11 @@
 - (void)setContentOffset:(CGPoint)contentOffset
 {
     if (!CGPointEqualToPoint(self.contentOffset, contentOffset)) {
-        CGFloat width = self.bounds.size.width;
-        self.currentPageIndex = (contentOffset.x + 0.5 * width) / width;
+        PRSlideViewDirection direction = self.direction;
+        CGRect bounds = self.bounds;
+        CGFloat width = CGRectGetWidth(bounds);
+        CGFloat height = CGRectGetHeight(bounds);
+        self.currentPageIndex = direction == PRSlideViewDirectionHorizontal ? (contentOffset.x + width * .5f) / width : (contentOffset.y + height * .5f) / height;
         super.contentOffset = contentOffset;
     }
 }

@@ -8,6 +8,11 @@
 
 #import "PRSlideViewPage.h"
 
+typedef NS_ENUM(NSUInteger, PRSlideViewDirection) {
+    PRSlideViewDirectionHorizontal,
+    PRSlideViewDirectionVertical
+};
+
 @class PRSlideView;
 
 @protocol PRSlideViewDelegate <UIScrollViewDelegate>
@@ -33,6 +38,8 @@
 
 @property (nonatomic, weak) id<PRSlideViewDelegate> delegate;
 @property (nonatomic, weak) id<PRSlideViewDataSource> dataSource;
+
+@property (nonatomic, assign) PRSlideViewDirection direction;
 
 - (NSInteger)currentPageIndex;
 - (NSInteger)numberOfPages;
