@@ -170,7 +170,9 @@
                 page.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin |
                                          UIViewAutoresizingFlexibleWidth |
                                          UIViewAutoresizingFlexibleRightMargin |
-                                         UIViewAutoresizingFlexibleHeight);
+                                         UIViewAutoresizingFlexibleTopMargin |
+                                         UIViewAutoresizingFlexibleHeight |
+                                         UIViewAutoresizingFlexibleBottomMargin);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self addSubview:page];
                 });
