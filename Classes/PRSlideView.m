@@ -131,7 +131,6 @@
     [self removePagesOutOfIndexRange:NSMakeRange(0, 0)];
     
     self.numberOfPages = [self.dataSource numberOfPagesInSlideView:self];
-    [self resizeContent];
     if (self.infiniteScrollingEnabled && !self.currentPageIndex) {
         [self scrollToPageAtActualIndex:self.baseIndexOffset animated:NO];
     } else {
