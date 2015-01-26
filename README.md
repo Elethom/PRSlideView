@@ -4,6 +4,8 @@
 
 Slide view with gracefully written UIKit-like methods, delegate and data source protocol. Infinite scrolling supported.
 
+Note: Auto layout not supported due to the special behaviours of `UIScrollView`. Please use autoresizing mask instead or wrap it with a container view.
+
 ## Installation
 
 ### With CocoaPods
