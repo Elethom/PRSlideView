@@ -35,6 +35,8 @@
 
 - (void)pageClicked:(PRSlideViewPage *)page;
 
+- (void)setup;
+
 @end
 
 @implementation PRSlideView
@@ -355,22 +357,34 @@
 
 #pragma mark - Life cycle
 
+- (void)setup
+{
+    self.pagingEnabled = YES;
+    self.showsVerticalScrollIndicator = NO;
+    self.showsHorizontalScrollIndicator = NO;
+    self.clipsToBounds = NO;
+    
+    self.classForIdentifiers = [[NSMutableDictionary alloc] init];
+    self.reusablePages = [[NSMutableDictionary alloc] init];
+    self.loadedPages = [[NSMutableArray alloc] init];
+    
+    self.scrollsToTop = NO;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.pagingEnabled = YES;
-        self.showsVerticalScrollIndicator = NO;
-        self.showsHorizontalScrollIndicator = NO;
-        self.clipsToBounds = NO;
-        
-        self.classForIdentifiers = [[NSMutableDictionary alloc] init];
-        self.reusablePages = [[NSMutableDictionary alloc] init];
-        self.loadedPages = [[NSMutableArray alloc] init];
-        
-        self.scrollsToTop = NO;
+        [self setup];
     }
     return self;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [self setup];
 }
 
 /*
