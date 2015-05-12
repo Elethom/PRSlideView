@@ -34,7 +34,9 @@ typedef NS_ENUM(NSUInteger, PRSlideViewDirection) {
 
 @end
 
-@interface PRSlideView : UIScrollView
+@interface PRSlideView : UIView
+
+@property (nonatomic, readonly) UIScrollView *scrollView;
 
 @property (nonatomic, weak) id<PRSlideViewDelegate> delegate;
 @property (nonatomic, weak) id<PRSlideViewDataSource> dataSource;

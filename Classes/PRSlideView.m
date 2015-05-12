@@ -10,6 +10,8 @@
 
 @interface PRSlideView ()
 
+@property (nonatomic, strong) UIScrollView *scrollView;
+
 @property (nonatomic, assign) NSInteger currentPageActualIndex;
 @property (nonatomic, assign) NSInteger numberOfPages;
 @property (nonatomic, assign) NSInteger baseIndexOffset;
@@ -123,7 +125,7 @@
 
 - (void)scrollToPageAtActualIndex:(NSInteger)index animated:(BOOL)animated
 {
-    [self setContentOffset:[self rectForPageAtIndex:index].origin animated:animated];
+    [self.scrollView setContentOffset:[self rectForPageAtIndex:index].origin animated:animated];
 }
 
 #pragma mark - Data
@@ -175,7 +177,7 @@
                                          UIViewAutoresizingFlexibleHeight |
                                          UIViewAutoresizingFlexibleBottomMargin);
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self addSubview:page];
+                    [self.scrollView addSubview:page];
                 });
             }
         }
@@ -289,7 +291,7 @@
         CGFloat height = CGRectGetHeight(bounds);
         CGSize contentSize = CGSizeMake(direction == PRSlideViewDirectionHorizontal ? infiniteScrollingEnabled ? width * numberOfPages * 512 : width * numberOfPages : width,
                                         direction == PRSlideViewDirectionVertical ? infiniteScrollingEnabled ? height * numberOfPages * 512 : height * numberOfPages : height);
-        self.contentSize = contentSize;
+        self.scrollView.contentSize = contentSize;
         for (PRSlideViewPage *page in self.visiblePages) {
             page.frame = [self rectForPageAtIndex:page.pageIndex];
         }
@@ -331,19 +333,6 @@
     }
 }
 
-- (void)setContentOffset:(CGPoint)contentOffset
-{
-    if (!CGPointEqualToPoint(self.contentOffset, contentOffset)) {
-        PRSlideViewDirection direction = self.direction;
-        CGRect bounds = self.bounds;
-        CGFloat width = CGRectGetWidth(bounds);
-        CGFloat height = CGRectGetHeight(bounds);
-        NSInteger index = (NSInteger)(direction == PRSlideViewDirectionHorizontal ? (contentOffset.x + width * .5f) / width : (contentOffset.y + height * .5f) / height);
-        self.currentPageActualIndex = index;
-        super.contentOffset = contentOffset;
-    }
-}
-
 - (void)setFrame:(CGRect)frame
 {
     self.isResizing = YES;
@@ -359,16 +348,26 @@
 
 - (void)setup
 {
-    self.pagingEnabled = YES;
-    self.showsVerticalScrollIndicator = NO;
-    self.showsHorizontalScrollIndicator = NO;
-    self.clipsToBounds = NO;
+    self.scrollView = ({
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        scrollView.autoresizingMask = (UIViewAutoresizingFlexibleWidth |
+                                       UIViewAutoresizingFlexibleHeight);
+        scrollView.pagingEnabled = YES;
+        scrollView.showsVerticalScrollIndicator = NO;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.clipsToBounds = NO;
+        scrollView.scrollsToTop = NO;
+        [scrollView addObserver:self
+                     forKeyPath:NSStringFromSelector(@selector(contentOffset))
+                        options:NSKeyValueObservingOptionNew
+                        context:nil];
+        [self addSubview:scrollView];
+        scrollView;
+    });
     
     self.classForIdentifiers = [[NSMutableDictionary alloc] init];
     self.reusablePages = [[NSMutableDictionary alloc] init];
     self.loadedPages = [[NSMutableArray alloc] init];
-    
-    self.scrollsToTop = NO;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -395,5 +394,24 @@
     // Drawing code
 }
 */
+
+#pragma mark - Key-Value Observing
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if (object == self.scrollView &&
+        [keyPath isEqualToString:NSStringFromSelector(@selector(contentOffset))]) {
+        CGPoint contentOffset = [change[NSKeyValueChangeNewKey] CGPointValue];
+        PRSlideViewDirection direction = self.direction;
+        CGRect bounds = self.bounds;
+        CGFloat width = CGRectGetWidth(bounds);
+        CGFloat height = CGRectGetHeight(bounds);
+        NSInteger index = (NSInteger)(direction == PRSlideViewDirectionHorizontal ? (contentOffset.x + width * .5f) / width : (contentOffset.y + height * .5f) / height);
+        self.currentPageActualIndex = index;
+    }
+}
 
 @end
