@@ -41,6 +41,8 @@
 
 @implementation PRSlideView
 
+@dynamic delegate;
+
 #pragma mark - Create pages
 
 - (id)dequeueReusablePageWithIdentifier:(NSString *)identifier forIndex:(NSInteger)index
