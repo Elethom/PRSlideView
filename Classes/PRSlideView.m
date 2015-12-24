@@ -8,6 +8,14 @@
 
 #import "PRSlideView.h"
 
+CGFloat const kPRSlideViewPageControlHeight = 17.0f;
+
+/* This multiplier should be a big number (e.g. 256, 1024)
+ * in order to fake the infinite scroll effect since we use the same
+ * trick as Apple does, providing a large contentOffset
+ */
+#define kBaseIndexOffsetMultiplier 256
+
 @interface PRSlideView ()
 
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -324,7 +332,7 @@
 
 - (void)setCurrentPageActualIndex:(NSInteger)currentPageActualIndex
 {
-    if (_currentPageActualIndex != currentPageActualIndex) {
+    if (_currentPageActualIndex != currentPageActualIndex || [self rectForPageAtIndex:currentPageActualIndex].origin.x - self.baseIndexOffset <= FLT_EPSILON) {
         _currentPageActualIndex = currentPageActualIndex;
         if (!self.isResizing) {
             [self didScrollToPageAtIndex:currentPageActualIndex];
@@ -347,7 +355,7 @@
             pageControl.hidden = YES;
         }
         
-        self.baseIndexOffset = self.infiniteScrollingEnabled ? numberOfPages * 256 : 0;
+        self.baseIndexOffset = self.infiniteScrollingEnabled ? numberOfPages * kBaseIndexOffsetMultiplier : 0;
         [self resizeContent];
     }
 }
