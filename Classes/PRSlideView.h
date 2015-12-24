@@ -8,7 +8,7 @@
 
 #import "PRSlideViewPage.h"
 
-CGFloat const kPRSlideViewPageControlHeight = 17.f;
+extern CGFloat const kPRSlideViewPageControlHeight;
 
 typedef NS_ENUM(NSUInteger, PRSlideViewDirection) {
     PRSlideViewDirectionHorizontal,
